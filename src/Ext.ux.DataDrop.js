@@ -30,6 +30,7 @@ Ext.ux.grid.DataDrop = Ext.extend(Ext.Component, {
                 value: '',
                 style: {
                     'font-size': '1px',
+					overflow: 'hidden',
                     color: '#fff',
                     border: 'none',
                     height: '100px'
@@ -70,11 +71,7 @@ Ext.ux.grid.DataDrop = Ext.extend(Ext.Component, {
 					var vals = this.rows[i].split(/\s*\t\s*/), data = {}, f = 0;
 					if (vals.join('').replace(' ', '') != '') {
 						for (k = 0; k < vals.length; k++) {
-							if (this.cols[f].dataIndex.toLowerCase() == store.idProperty.toLowerCase()) {
-								f++;
-							}
-							data[this.cols[f].dataIndex] = vals[k];
-							f++;
+							data[this.cols[k].dataIndex] = vals[k];
 						}
 						store.add(new rec(data));
 					}
