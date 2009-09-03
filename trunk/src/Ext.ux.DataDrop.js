@@ -1,3 +1,4 @@
+Ext.ns('Ext.ux.grid');
 /**
  * @author Shea Frederick - http://www.vinylfox.com
  * @class Ext.ux.grid.DataDrop
@@ -63,19 +64,23 @@ Ext.ux.grid.DataDrop = Ext.extend(Ext.Component, {
             this.nv = nv;
             Ext.TaskMgr.stop(this.changeValueTask);
             this.rows = this.nv.split(/\r\n|\r|\n/);
-            for (i = 0; i < this.rows.length; i++) {
-                var vals = this.rows[i].split(/\s*\t\s*/), data = {}, f = 0;
-				if (vals.join('').replace(' ', '') != '') {
-					for (k = 0; k < vals.length; k++) {
-						if (store.reader.meta.fields[f] == store.reader.meta.idProperty) {
+			this.cols = this.cmp.getColumnModel().getColumnsBy(function(c){ return !c.hidden; });
+			if (this.cols.length && this.rows.length) {
+				for (i = 0; i < this.rows.length; i++) {
+					var vals = this.rows[i].split(/\s*\t\s*/), data = {}, f = 0;
+					if (vals.join('').replace(' ', '') != '') {
+						for (k = 0; k < vals.length; k++) {
+							if (this.cols[f].dataIndex.toLowerCase() == store.idProperty.toLowerCase()) {
+								f++;
+							}
+							data[this.cols[f].dataIndex] = vals[k];
 							f++;
 						}
-						data[store.reader.meta.fields[f]] = vals[k];
-						f++;
+						store.add(new rec(data));
 					}
-					store.add(new rec(data));
 				}
-            }
+				this.resizeDropArea();
+			}
             Ext.TaskMgr.start(this.changeValueTask);
         }
     }
