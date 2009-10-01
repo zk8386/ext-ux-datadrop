@@ -48,8 +48,16 @@ Ext.override(Ext.Element, (function(){
             e = e.toLowerCase();
             e.replace(onPref, '');
             if (mouseEvts.test(e)) {
-                var b = this.getBox(),
-                    x = b.x + b.width / 2,
+                var b = {};
+                if (this.getBox) {
+                    b = this.getBox();
+                } else {
+                    b.width = this.getWidth();
+                    b.height = this.getHeight();
+                    b.x = this.getX();
+                    b.y = this.getY();
+                }
+                var x = b.x + b.width / 2,
                     y = b.y + b.height / 2;
                 evt = document.createEvent("MouseEvents");
                 evt.initMouseEvent(e, true, true, window, (e=='dblclick')?2:1, x, y, x, y, false, false, false, false, 0, null);
