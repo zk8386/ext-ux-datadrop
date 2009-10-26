@@ -49,7 +49,7 @@ Ext.override(Ext.Element, (function(){
             e.replace(onPref, '');
             if (mouseEvts.test(e)) {
                 var b = {};
-                if (this.getBox) {
+                if (Ext.isFunction(this.getBox)) {
                     b = this.getBox();
                 } else {
                     b.width = this.getWidth();
